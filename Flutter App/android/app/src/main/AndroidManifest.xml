@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:label="gen_ai_powered_ar_app"
         android:name="${applicationName}"
@@ -30,6 +33,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.example.gen_ai_powered_ar_app.API_KEY"
+            android:value="Dy5SSws9SlcTWzmjCW0ZGw0oksS33LTj/DF6MD8cZGALDGJ9PwF1MHBNbH0iDmxzLgpyfysbMyJ6XEF1Jw5ofmQMbn9oQyN/Kxx1dzgkZGsDCyMoe0MjfiMMZHw5CnIwcDR6MCgab3YmCkh2OU07SRdDI2QrHWhzJBtyMHA0I3ElAmxnJAZ1a2gyLTA6A2BmLABzfzlNO0loGGh8LgB2YWhDI38rDCNPZk1sfS4abXc5TTtJaBxkfDkKL1snDmZ3Hh1gcSEGb3VoQyNhLwFyd2QsbX0/C1N3KQBmfCMbaH0kTS0wOQpvYS9BU3cpAHN2IwFmMGZNcnckHGQ8BQ1rdykbVWArDGp7JAgjPmgcZHw5Ci9BPx1ncykKVWArDGp7JAgjPmgcZHw5Ci9BOg5zYS88cXM+BmB+Bw5xMGZNcnckHGQ8BwB1eyUBVWArDGp7JAgjPmgcZHw5Ci9WLwFydxkfYGYjDm1fKx8jPmgcZHw5Ci9RCytVYCsManskCCNPZk1kajoGc3ceBmx3GRtgfzpNO3w/A20+aAZyXiUMYH5oVWdzJhxkb2YUI3A/AWV+LyZlYWhVWjApAGw8LxdgfzoDZDwtCm9NKwZeYiUYZGAvC15zODBgYjpNXD5oGWBgIw5vZjlNO0loDG5/Jxpvez4WI09mTXF+KxtnfTgCcjBwNCNzJAtzfSMLI09mTWx9LhptdzlNO0loHGR8OQovWycOZnceHWBxIQZvdWhDI2EvAXJ3ZCxtfT8LU3cpAGZ8IxtofSRNLTA5Cm9hL0FTdykAc3YjAWYwZk1ydyQcZDwFDWt3KRtVYCsManskCCM+aBxkfDkKL0E/HWdzKQpVYCsManskCCM+aBxkfDkKL0E6DnNhLzxxcz4GYH4HDnEwZk1ydyQcZDwHAHV7JQFVYCsManskCCM+aBxkfDkKL1YvAXJ3GR9gZiMObV8rHyM+aBxkfDkKL1ELK1VgKwxqeyQII09mTWRqOgZzdx4GbHcZG2B/Ok07fD8DbT5oBnJeJQxgfmhVZ3MmHGRvZhQjcD8BZX4vJmVhaFVaMGgyLTA8DnN7KwF1YWhVWjApAGx/PwFoZjNNXD5oH21zPgluYCccIygRTWh9OU1cPmgCbnY/A2RhaFVaMDkKb2EvQUh/KwhkRjgOYnkjAWYwZk1ydyQcZDwJA25nLj1kcSUIb3s+Bm58aEMjYS8BcndkPWRxJR1leyQIIz5oHGR8OQovXSgFZHE+O3NzKQRofC1NLTA5Cm9hL0FSZzgJYHEvO3NzKQRofC1NLTA5Cm9hL0FSYisdcncZH2BmIw5tXysfIz5oHGR8OQovXyUbaH0kO3NzKQRofC1NLTA5Cm9hL0FFdyQcZEE6DnV7KwNMczpNLTA5Cm9hL0FCUw47c3MpBGh8LU1cPmgKeWIjHWRGIwJkQT4ObGJoVW9nJgMtMCMcTX0pDm0wcAlgfjkKfE83EMIM6bylLQ5YIu340JZ33AIVPBYUeZJtHrFbypQs3M8Z/e9gjVCCsyw9Z7ZCd48UwaIrhly9UCSkvJhnssHV9iE9DCD0fSdoKKvnKo7Z725ppyWlzI9zO7RrbYBYLQR86xKvkmJTBz1sRzMOUKc42I5MmbDXNjBikq9YvuFYmLEW31IbdrXaTOvim690Q24cUm4uAuf38XLn342YhidMZ8AIP9cM6U7j4VghzR7YMF2ILDCf6HfrRDER15ewaly6ZybICzrPdhE4buTKv0SzkEv5MhpD5gXuUsSu3cfA8ox3xCsxJicgWT7ioThHbfLHUcrEzAeHkW/Uh2BtSm8BEg==" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
