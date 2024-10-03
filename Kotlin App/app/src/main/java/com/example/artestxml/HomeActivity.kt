@@ -1,19 +1,18 @@
-// app/src/main/java/com/example/artestxml/HomeActivity.kt
 package com.example.artestxml
-
-import android.content.Intent
+import android.os.Build
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.AsyncTask
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.os.Environment
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,31 +20,32 @@ import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var imageView: ImageView
-    private lateinit var progressBar: ProgressBar
     private val client = OkHttpClient()
+    private val apiKey = "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"  // Use secured API key access
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
-        val navigateButton: Button = findViewById(R.id.button)
-        val generateButton: Button = findViewById(R.id.generateButton)
-        val editText: EditText = findViewById(R.id.editTextPrompt)
-        imageView = findViewById(R.id.imageView)
-        progressBar = findViewById(R.id.progressBar)
-
-        // Navigate to MainActivity
-        navigateButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = Color.parseColor("#FF000000")
         }
 
-        // Generate image using the model
+        val generateButton: Button = findViewById(R.id.generateButton)
+        val editText: EditText = findViewById(R.id.editTextPrompt)
+
+        // Request storage permission to save the image
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+
+        // Generate image and save it as PNG
         generateButton.setOnClickListener {
             val prompt = editText.text.toString().trim()
             if (prompt.isNotEmpty()) {
@@ -57,95 +57,77 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun generateImageFromText(prompt: String) {
-        val apiKey = "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" // Securely access the API key
-
-        // Show ProgressBar
-        progressBar.visibility = View.VISIBLE
-
-        // Launch a coroutine on IO dispatcher for network operations
+        // Launch coroutine for network operation
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Prepare the JSON request body
+                // Prepare JSON request body
                 val json = JSONObject().apply {
                     put("inputs", prompt)
-                    // Optional: Add parameters for customization
-                    put(
-                        "parameters",
-                        JSONObject().apply {
-                            put("width", 512)
-                            put("height", 512)
-                            put("num_inference_steps", 50)
-                            put("guidance_scale", 7.5)
-                        }
-                    )
+                    put("parameters", JSONObject().apply {
+                        put("width", 512)
+                        put("height", 512)
+                        put("num_inference_steps", 50)
+                        put("guidance_scale", 7.5)
+                    })
                 }
 
-                val requestBody = RequestBody.create(
-                    "application/json".toMediaTypeOrNull(),
-                    json.toString()
-                )
+                val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), json.toString())
 
                 val request = Request.Builder()
-                    .url("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev") // Replace with desired model
+                    .url("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev")
                     .addHeader("Authorization", "Bearer $apiKey")
                     .post(requestBody)
                     .build()
 
-                // Execute the request
                 val response = client.newCall(request).execute()
-
-                if (!response.isSuccessful) {
-                    // Handle unsuccessful response
-                    val errorBody = response.body?.string()
-                    val errorMessage = if (errorBody != null) {
-                        try {
-                            val jsonResponse = JSONObject(errorBody)
-                            jsonResponse.getJSONObject("error").getString("message")
-                        } catch (e: Exception) {
-                            "Unknown error occurred."
-                        }
+                if (response.isSuccessful) {
+                    // Retrieve image bytes
+                    val imageBytes = response.body?.bytes()
+                    if (imageBytes != null) {
+                        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        // Save the image as PNG
+                        saveImageAsPNG(bitmap)
                     } else {
-                        "Unknown error occurred."
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@HomeActivity, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                        progressBar.visibility = View.GONE
-                    }
-                    return@launch
-                }
-
-                // Parse the binary image data
-                val imageBytes = response.body?.bytes()
-
-                if (imageBytes != null) {
-                    // Convert bytes to Bitmap
-                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                    withContext(Dispatchers.Main) {
-                        // Display the image using Glide
-                        Glide.with(this@HomeActivity)
-                            .load(bitmap)
-//                            .placeholder(R.drawable.placeholder) // Optional: placeholder image
-//                            .error(R.drawable.error) // Optional: error image
-                            .into(imageView)
-
-                        // Hide ProgressBar
-                        progressBar.visibility = View.GONE
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@HomeActivity, "Failed to retrieve image", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@HomeActivity, "Failed to retrieve image.", Toast.LENGTH_SHORT).show()
-                        progressBar.visibility = View.GONE
+                        Toast.makeText(this@HomeActivity, "Error: ${response.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@HomeActivity, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
-                    progressBar.visibility = View.GONE
                 }
+            }
+        }
+    }
+
+    private fun saveImageAsPNG(bitmap: Bitmap) {
+        val fileName = "generated_image.png"
+        val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "GeneratedImages")
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+
+        val imageFile = File(dir, fileName)
+
+        try {
+            val fos = FileOutputStream(imageFile)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos.flush()
+            fos.close()
+
+            runOnUiThread {
+                Toast.makeText(this, "Image saved at: ${imageFile.absolutePath}", Toast.LENGTH_LONG).show()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            runOnUiThread {
+                Toast.makeText(this, "Error saving image: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -1,61 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"> <!-- Fill the viewport for proper centering -->
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:gravity="center"> <!-- Centering content -->
+
+    <!-- Greeting Text -->
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:text="Hey, good evening!"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
 
-        <!-- Button to navigate to MainActivity -->
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to Main Activity" />
+    <!-- Prompt Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What do you want to generate?"
+        android:textSize="18sp"
+        android:layout_margin="5dp"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
 
-        <!-- EditText for text prompt -->
-        <EditText
-            android:id="@+id/editTextPrompt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter image description"
-            android:layout_marginTop="16dp"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:maxLines="5"
-            android:gravity="top|start"
-            android:background="@android:drawable/edit_text" />
+    <!-- Spacer between TextViews and EditText -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="26dp" /> <!-- Spacer height -->
 
-        <!-- Button to generate image -->
-        <Button
-            android:id="@+id/generateButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Generate Image"
-            android:layout_marginTop="8dp" />
+    <!-- EditText for text prompt with rounded corners and purple borders -->
+    <EditText
+        android:id="@+id/editTextPrompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Your Imagination"
+        android:inputType="textMultiLine"
+        android:minLines="1"
+        android:maxLines="5"
+        android:gravity="top|start"
+        android:background="@drawable/rounded_edittext"
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        android:padding="16dp" />
 
-        <!-- ImageView to display generated image -->
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Generated Image"
-            android:background="@android:color/darker_gray" />
+    <!-- Button to generate image -->
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate >"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_marginTop="8dp" />
 
-        <!-- Optional: ProgressBar to indicate loading -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:layout_marginTop="16dp" />
+</LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
