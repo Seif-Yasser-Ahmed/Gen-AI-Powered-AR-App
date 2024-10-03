@@ -1,0 +1,8 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#03346E</item>
+        <item name="colorPrimaryDark">@color/black</item> <!-- This sets the status bar color -->
+        <item name="colorAccent">@color/white</item>
+    </style>
+</resources>
