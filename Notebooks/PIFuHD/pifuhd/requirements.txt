@@ -1,0 +1,17 @@
+# This is a requirement.txt file
+# to install all these requirements:
+# `pip install -r requirements.txt`
+# Make sure you have pip installed!
+# To update just use `pip install -r requirements.txt --upgrade`
+torch>=0.4.1
+torchvision>=0.2.1
+Pillow                	        # PIL
+scikit-image                      #skimage
+tqdm
+opencv-python>=3.4.0.14     # cv2
+trimesh
+PyOpenGL
+ffmpeg
+pycocotools==2.0.0
+numpy>=1.14.0
+
