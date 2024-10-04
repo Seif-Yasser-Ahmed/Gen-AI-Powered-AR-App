@@ -69,15 +69,15 @@ class HomeActivity : AppCompatActivity() {
                 val json = JSONObject().apply {
                     put("inputs", prompt)
                     // Optional: Add parameters for customization
-                    put(
-                        "parameters",
-                        JSONObject().apply {
-                            put("width", 512)
-                            put("height", 512)
-                            put("num_inference_steps", 50)
-                            put("guidance_scale", 7.5)
-                        }
-                    )
+//                    put(
+//                        "parameters",
+//                        JSONObject().apply {
+//                            put("width", 512)
+//                            put("height", 512)
+//                            put("num_inference_steps", 50)
+//                            put("guidance_scale", 7.5)
+//                        }
+//                    )
                 }
 
                 val requestBody = RequestBody.create(
