@@ -12,58 +12,67 @@
         android:padding="16dp"
         android:gravity="center"> <!-- Centering content -->
 
-    <!-- Greeting Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hey, good evening!"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
-        android:textColor="@color/white"
-        tools:ignore="HardcodedText" />
+        <!-- Greeting Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hey, good evening!"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
 
-    <!-- Prompt Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What do you want to generate?"
-        android:textSize="18sp"
-        android:layout_margin="5dp"
-        android:textColor="@color/white"
-        tools:ignore="HardcodedText" />
+        <!-- Prompt Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What do you want to generate?"
+            android:textSize="18sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
 
-    <!-- Spacer between TextViews and EditText -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="26dp" /> <!-- Spacer height -->
+        <!-- Spacer between TextViews and EditText -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="26dp" /> <!-- Spacer height -->
 
-    <!-- EditText for text prompt with rounded corners and purple borders -->
-    <EditText
-        android:id="@+id/editTextPrompt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Your Imagination"
-        android:inputType="textMultiLine"
-        android:minLines="1"
-        android:maxLines="5"
-        android:gravity="top|start"
-        android:background="@drawable/rounded_edittext"
-        android:textColor="@color/white"
-        android:layout_margin="5dp"
-        android:padding="16dp" />
+        <!-- EditText for text prompt with rounded corners and purple borders -->
+        <EditText
+            android:id="@+id/editTextPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Your Imagination"
+            android:inputType="textMultiLine"
+            android:minLines="1"
+            android:maxLines="5"
+            android:gravity="top|start"
+            android:background="@drawable/rounded_edittext"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
+            android:padding="16dp" />
 
-    <!-- Button to generate image -->
-    <Button
-        android:id="@+id/generateButton"
-        android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Generate >"
-        android:padding="16dp"
-        android:gravity="center"
-        android:layout_marginTop="8dp" />
+        <!-- Button to generate image -->
+        <Button
+            android:id="@+id/generateButton"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate >"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
 
-</LinearLayout>
+        <!-- Button to navigate to MainActivity -->
+        <Button
+            android:id="@+id/navigateToMainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ready For AR?"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
 
-    </ScrollView>
+    </LinearLayout>
+
+</ScrollView>

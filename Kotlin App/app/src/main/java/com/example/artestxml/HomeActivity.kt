@@ -1,12 +1,16 @@
 package com.example.artestxml
+
+import android.content.Intent
 import android.os.Build
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -28,17 +32,18 @@ class HomeActivity : AppCompatActivity() {
 
     private val client = OkHttpClient()
     private val apiKey = "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"  // Use secured API key access
+    private lateinit var generateButton: Button
+    private lateinit var navigateToMainButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = Color.parseColor("#FF000000")
-        }
+        window.statusBarColor = Color.parseColor("#FF000000")
 
-        val generateButton: Button = findViewById(R.id.generateButton)
         val editText: EditText = findViewById(R.id.editTextPrompt)
+        generateButton = findViewById(R.id.generateButton)
+        navigateToMainButton = findViewById(R.id.navigateToMainButton)
 
         // Request storage permission to save the image
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -53,6 +58,12 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter a prompt", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // Navigate to MainActivity
+        navigateToMainButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -80,6 +91,7 @@ class HomeActivity : AppCompatActivity() {
                     .build()
 
                 val response = client.newCall(request).execute()
+
                 if (response.isSuccessful) {
                     // Retrieve image bytes
                     val imageBytes = response.body?.bytes()
@@ -97,6 +109,7 @@ class HomeActivity : AppCompatActivity() {
                         Toast.makeText(this@HomeActivity, "Error: ${response.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
@@ -122,7 +135,8 @@ class HomeActivity : AppCompatActivity() {
             fos.close()
 
             runOnUiThread {
-                Toast.makeText(this, "Image saved at: ${imageFile.absolutePath}", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this, "Image saved at: ${imageFile.absolutePath}", Toast.LENGTH_LONG).show()
+                navigateToMainButton.visibility = Button.VISIBLE
             }
         } catch (e: IOException) {
             e.printStackTrace()
