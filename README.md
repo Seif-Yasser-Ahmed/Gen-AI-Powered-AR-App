@@ -1,6 +1,15 @@
 # Gen-AI-Powered-AR-App
 
-Welcome to the **Gen-AI-Powered-AR-App** repository! This project explores various architectures for generating 3D images from 2D images and implements a text-to-image generation model. It also includes a Kotlin application that leverages the Meshy API to visualize 3D models in augmented reality using ARCore.
+Welcome to the **Gen-AI-Powered-AR-App** repository! This project explores various architectures for generating 3D images from 2D images and implements a text-to-image generation model. It also includes a Kotlin application that leverages the **Meshy API** to visualize 3D models in augmented reality using ARCore.
+
+# Team Members
+
+> - [Abdallah Essam Al-Sakka](https://github.com/al-sakka)
+> - [Mohamed Ahmed Esmat](https://github.com/Mohamed-Ahmed-Esmat)
+> - [Mohamed Hani Fadel](https://github.com/Mohamed-Fadel222)
+> - [Seif Yasser Ahmed](https://github.com/Seif-Yasser-Ahmed) 
+> - [Saifeldin Mohamed Hatem](https://github.com/Trimbex)
+> - [Youssef Mahmoud hassan](https://github.com/youssef123tt)
 
 ## Table of Contents
 
@@ -28,10 +37,13 @@ This repository contains several Jupyter notebooks showcasing the following:
 ## Notebooks
 
 The following notebooks are included in this repository:
-
-1. `3D_Image_Generation_Pix3D.ipynb`: Various architectures for 3D image generation from 2D images.
-2. `Text_to_Image_Generation_CUB200.ipynb`: Implementations of text-to-image generation methods.
-3. `Pix3D_Architecture_Comparison.ipynb`: Comparison of different models for 3D generation.
+1. [`3d-Pix3pix.ipynb`](Notebooks/3DPix2Pix/3d-pix3pix.ipynb): Implementatation and training of 3D-Pix2Pix with a U-Net Generator and a Patch Discriminator.
+2. [`image2vox-model.ipynb`](Notebooks/Pix2Vox/image2vox-model.ipynb): Implementation and training of Pix2Vox.
+4. [`Pix2Vox-Pretrained-A.ipynb`](Notebooks/Pix2Vox/Pix2Vox-Pretrained-A.ipynb): Inference of the pretrained `Pix2Vox-A` version.
+3. [`pretrained-pix2vox-F.ipynb`](Notebooks/Pix2Vox/pretrained-pix2vox-F.ipynb): Inference of the pretrained `Pix2Vox-F` version.
+5. [`dcgan-cls.ipynb`](Notebooks/Text2Image/dcgan-cls.ipynb): Implementation of a Text-To-Image cGAN, leveraging text descriptions as conditioning inputs to generate corresponding images.
+6. [`dcgan-cls_one_Cat.ipynb`](Notebooks/Text2Image/dcgan-cls_one_Cat.ipynb): Implementation of a Text-To-Image cGAN on one category of images due to lack of resources.
+7. [`Notebooks/PIFuHD/`](Notebooks/PIFuHD): Exploring PIFuHD from [Meta Research](https://github.com/facebookresearch) for High-Resolution 3D Human Digitization.
 
 ## Kotlin Application
 
