@@ -6,7 +6,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.google.ar.sceneform.rendering.ModelRenderable
 import io.github.sceneview.ar.ArSceneView
 import io.github.sceneview.ar.node.ArModelNode
 
@@ -27,11 +26,11 @@ class MainActivity : AppCompatActivity() {
         sceneView = findViewById(R.id.sceneView)
         place = findViewById(R.id.button)
         navigateButton = findViewById(R.id.navigateButton)
-
+        val glbUrl = intent.getStringExtra("GLB_URL")
 
         modelNode = ArModelNode().apply {
             loadModelGlbAsync(
-                glbFileLocation = "kiki.glb"
+                glbFileLocation = glbUrl ?: "kiki.glb" // Use the URL or a default file if URL is null
             ) {
                 sceneView.planeRenderer.isVisible = true
             }

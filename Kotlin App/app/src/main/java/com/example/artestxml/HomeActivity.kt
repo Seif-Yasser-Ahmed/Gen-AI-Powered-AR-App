@@ -38,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var generateButton: Button
     private lateinit var navigateToMainButton: Button
     private lateinit var progressBar: ProgressBar
-
+    var glb_url = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
@@ -64,9 +64,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // Navigate to MainActivity
+
         navigateToMainButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("GLB_URL", glb_url)
             startActivity(intent)
         }
     }
@@ -115,6 +116,17 @@ class HomeActivity : AppCompatActivity() {
                     val getResponse = client.newCall(getRequest).execute()
                     val getResponseBody = getResponse.body?.string()
                     Log.d("GetResponse", getResponseBody.toString())
+
+                    if(getResponse.isSuccessful){
+                        val getJson = JSONObject(getResponseBody!!)
+                        val model_urls = getJson.getString("model_urls")
+                        glb_url = JSONObject(model_urls).getString("glb")
+                        Log.d("GLB_URL", glb_url)
+                        runOnUiThread {
+                            navigateToMainButton.visibility = Button.VISIBLE
+                        }
+                    }
+
                     withContext(Dispatchers.Main) {
                         progressBar.visibility = View.GONE
                         Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
@@ -154,10 +166,7 @@ class HomeActivity : AppCompatActivity() {
             fos.flush()
             fos.close()
 
-            runOnUiThread {
-                Toast.makeText(this, "Object file saved at: ${objectFile.absolutePath}", Toast.LENGTH_LONG).show()
-                navigateToMainButton.visibility = Button.VISIBLE
-            }
+
         } catch (e: IOException) {
             e.printStackTrace()
             runOnUiThread {
