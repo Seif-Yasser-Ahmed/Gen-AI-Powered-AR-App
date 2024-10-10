@@ -79,6 +79,8 @@ To get started with the project, follow these steps:
     ```bash
     pip install -r requirements.txt
     ```
+4. Install Android Studio
+   [Android Studio](https://developer.android.com/)
 
 ## Acknowledgments
 We would like to express our gratitude to the following repositories and their contributors for their valuable resources:
