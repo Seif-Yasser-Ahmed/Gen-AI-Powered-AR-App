@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"> <!-- Fill the viewport for proper centering -->
+    android:fillViewport="true">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:gravity="center"> <!-- Centering content -->
+        android:gravity="center">
 
         <!-- Greeting Text -->
         <TextView
@@ -33,53 +33,92 @@
             android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 
-        <!-- Spacer between TextViews and EditText -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="26dp" /> <!-- Spacer height -->
+            android:layout_height="45dp" />
 
-        <!-- EditText for text prompt with rounded corners and purple borders -->
-        <EditText
-            android:id="@+id/editTextPrompt"
+        <!-- EditText with clear button -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Your Imagination"
-            android:inputType="textMultiLine"
-            android:minLines="1"
-            android:maxLines="5"
-            android:gravity="top|start"
-            android:background="@drawable/rounded_edittext"
-            android:textColor="@color/white"
-            android:layout_margin="5dp"
-            android:padding="16dp" />
+            android:orientation="horizontal">
 
-        <!-- Button to generate image -->
+            <EditText
+                android:id="@+id/editTextPrompt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Enter Your Imagination"
+                android:inputType="textMultiLine"
+                android:minLines="1"
+                android:maxLines="5"
+                android:gravity="top|start"
+                android:background="@drawable/rounded_edittext"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"
+                android:padding="16dp" />
+
+            <ImageView
+                android:id="@+id/clearIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="Clear text"
+                android:layout_gravity="center"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+        <!-- Hint Text -->
+        <TextView
+            android:id="@+id/hintText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="10dp"
+            android:gravity="start"
+            android:text="e.g. magic bird"
+            android:textSize="14sp"
+            android:textColor="#808080"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+        <!-- Generate Button -->
         <Button
             android:id="@+id/generateButton"
             android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Generate >"
+            android:text="Generate"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:drawablePadding="8dp"
             android:padding="16dp"
             android:gravity="center"
             android:layout_marginTop="8dp" />
 
-        <!-- Button to navigate to MainActivity -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+
+        <!-- Progress TextView -->
+        <TextView
+            android:id="@+id/progressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generating: 0%"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
         <Button
             android:id="@+id/navigateToMainButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ready For AR?"
-            android:visibility="gone"
+            android:text="Ready? Click Here"
+            android:visibility="invisible"
             android:layout_marginTop="16dp" />
-
-         <ProgressBar
-             android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:visibility="gone"
-             android:layout_gravity="center" />
-
     </LinearLayout>
-
 </ScrollView>

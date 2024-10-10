@@ -1,5 +1,7 @@
 package com.example.artestxml
-
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.animation.AnimationUtils
 import android.content.Intent
 import android.os.Build
 import android.Manifest
@@ -14,7 +16,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -34,33 +38,69 @@ import java.io.IOException
 class HomeActivity : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val apiKey = "msy_Ppsd8kA4cKiMXVCFGgPbW7drzc6ZJbkJepre"  // Use secured API key access
+    private val apiKey = "msy_T0ootoDAJTwMkWD7sEr5tlccHFFOaa2eTAoI"  // Use secured API key access
     private lateinit var generateButton: Button
     private lateinit var navigateToMainButton: Button
-    private lateinit var progressBar: ProgressBar
-    var glb_url = ""
+//    private lateinit var progressBar: ProgressBar
+    private lateinit var progressTextView: TextView
+    private var glb_url = ""
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
         window.statusBarColor = Color.parseColor("#FF000000")
-
+        val clearIcon: ImageView = findViewById(R.id.clearIcon)
         val editText: EditText = findViewById(R.id.editTextPrompt)
         generateButton = findViewById(R.id.generateButton)
         navigateToMainButton = findViewById(R.id.navigateToMainButton)
-        progressBar = findViewById(R.id.progressBar)
+//        progressBar = findViewById(R.id.progressBar) // Make sure you have a ProgressBar in your layout
+        progressTextView = findViewById(R.id.progressTextView)
+
+//        // Load the blinking animation
+        val blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.blink)
+//
+//        // Start the animation on the TextView
+//        progressTextView.startAnimation(blinkAnimation)
+
+        // Initially set progressTextView to invisible
+        progressTextView.visibility = View.INVISIBLE
+
         // Request storage permission to save the object file
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+
+        // Show the clear icon only when there is text in the EditText
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Clear the EditText when the clear icon is clicked
+        clearIcon.setOnClickListener {
+            editText.text.clear()
         }
 
         // Generate object file and save it as .obj
         generateButton.setOnClickListener {
             val prompt = editText.text.toString().trim()
             if (prompt.isNotEmpty()) {
+                // Start the animation on the TextView when the button is clicked
+                progressTextView.visibility = View.VISIBLE
+                progressTextView.startAnimation(blinkAnimation)
+
+                // Proceed with the generation process
                 generateObjectFromText(prompt)
+                generateButton.isEnabled = false
             } else {
-                Toast.makeText(this, "Please enter a prompt", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Prompt is empty.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -78,7 +118,9 @@ class HomeActivity : AppCompatActivity() {
             try {
                 // Show progress bar
                 withContext(Dispatchers.Main) {
-                    progressBar.visibility = View.VISIBLE
+
+                    progressTextView.visibility = View.INVISIBLE
+                    progressTextView.text = "Generating: 0%"
                 }
 
                 // Prepare JSON request body
@@ -104,8 +146,16 @@ class HomeActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(responseBody!!)
                     val id = jsonObject.getString("result")
                     Log.d("ID", id)
-                    // Wait for 70 seconds
-                    delay(70000)
+
+                    // Simulate progress update (wait for 70 seconds)
+                    for (i in 1..10) {
+                        delay(7000) // Wait for 7 seconds
+                        withContext(Dispatchers.Main) {
+                            progressTextView.visibility = View.VISIBLE
+                            progressTextView.text = "Generating: ${i * 10}%"
+                        }
+                    }
+
                     val refineJson = JSONObject().apply {
                         put("mode", "refine")
                         put("preview_task_id", id)
@@ -124,15 +174,24 @@ class HomeActivity : AppCompatActivity() {
                         val refineJsonObject = JSONObject(refineResponseBody!!)
                         val refineId = refineJsonObject.getString("result")
                         Log.d("RefineID", refineId)
-                        // Wait for 180 seconds
-                        delay(180000)
-                        //add code to make a get request to the same api
+
+                        // Simulate progress update (wait for 180 seconds)
+                        for (i in 11..20) {
+                            delay(9000) // Wait for 9 seconds
+                            withContext(Dispatchers.Main) {
+                                progressTextView.visibility = View.VISIBLE
+                                progressTextView.text = "Refining: ${i * 5}%"
+                            }
+                        }
+
+                        // Add code to make a GET request to the same API
                         val getRequest = Request.Builder()
                             .url("https://api.meshy.ai/v2/text-to-3d/$refineId")
                             .addHeader("Authorization", "Bearer $apiKey")
                             .get()
                             .build()
-                        //send the id we got to the api and get the response
+
+                        // Send the id we got to the API and get the response
                         val getResponse = client.newCall(getRequest).execute()
                         val getResponseBody = getResponse.body?.string()
                         Log.d("GetResponse", getResponseBody.toString())
@@ -147,13 +206,18 @@ class HomeActivity : AppCompatActivity() {
                             }
                         }
 
-                        withContext(Dispatchers.Main) {
-                            progressBar.visibility = View.GONE
-                            //Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
+                        withContext(Dispatchers.Main)
+                        {
+                            progressTextView.text = "Done: 100%"
+                            generateButton.isEnabled = true
+                            // Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
+                    }
+                    else
+                    {
                         withContext(Dispatchers.Main) {
-                            progressBar.visibility = View.GONE
+                            progressTextView.visibility = View.INVISIBLE
+                            generateButton.isEnabled = true
                             Toast.makeText(this@HomeActivity, "Error: ${refineResponse.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -163,7 +227,8 @@ class HomeActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    progressBar.visibility = View.GONE
+                    progressTextView.visibility = View.INVISIBLE
+//                    progressBar.visibility = View.GONE
                     Toast.makeText(this@HomeActivity, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -189,8 +254,6 @@ class HomeActivity : AppCompatActivity() {
             fos.write(objectBytes)
             fos.flush()
             fos.close()
-
-
         } catch (e: IOException) {
             e.printStackTrace()
             runOnUiThread {
