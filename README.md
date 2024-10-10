@@ -4,9 +4,9 @@ Welcome to the **Gen-AI-Powered-AR-App** repository! This project explores vario
 
 # Team Members
 
-> - [Abdallah Essam Al-Sakka](https://github.com/al-sakka)
+> - [Abdallah Essam El-Sakka](https://github.com/al-sakka)
 > - [Mohamed Ahmed Esmat](https://github.com/Mohamed-Ahmed-Esmat)
-> - [Mohamed Hani Fadel](https://github.com/Mohamed-Fadel222)
+> - [Mohamed Hany Fadel](https://github.com/Mohamed-Fadel222)
 > - [Seif Yasser Ahmed](https://github.com/Seif-Yasser-Ahmed) 
 > - [Saifeldin Mohamed Hatem](https://github.com/Trimbex)
 > - [Youssef Mahmoud hassan](https://github.com/youssef123tt)
