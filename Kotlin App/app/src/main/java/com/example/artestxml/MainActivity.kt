@@ -42,13 +42,17 @@ class MainActivity : AppCompatActivity() {
         sceneView.addChild(modelNode)
 
         place.setOnClickListener {
-            modelNode.anchor()
-            sceneView.planeRenderer.isVisible = true
+            anchorObject()
         }
 
         navigateButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun anchorObject() {
+        modelNode.anchor()
+        sceneView.planeRenderer.isVisible = true
     }
 }

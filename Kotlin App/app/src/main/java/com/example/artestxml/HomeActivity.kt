@@ -137,7 +137,8 @@ class HomeActivity : AppCompatActivity() {
                     .post(requestBody)
                     .build()
 
-                val response = client.newCall(request).execute()
+                var response = client.newCall(request).execute()
+
                 val responseBody = response.body?.string()
                 Log.d("Response", response.toString())
                 Log.d("ResponseBody", responseBody.toString())
@@ -146,14 +147,28 @@ class HomeActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(responseBody!!)
                     val id = jsonObject.getString("result")
                     Log.d("ID", id)
-
+                    val getRequest1 = Request.Builder()
+                        .url("https://api.meshy.ai/v2/text-to-3d/$id")
+                        .addHeader("Authorization", "Bearer $apiKey")
+                        .get()
+                        .build()
                     // Simulate progress update (wait for 70 seconds)
-                    for (i in 1..10) {
-                        delay(7000) // Wait for 7 seconds
+                    var getResponse = client.newCall(request).execute()
+                    var getResponseBody = getResponse.body?.string()
+                    var progress = 0
+                    while (progress < 100) {
+                        // Wait for 7 seconds
                         withContext(Dispatchers.Main) {
                             progressTextView.visibility = View.VISIBLE
-                            progressTextView.text = "Generating: ${i * 10}%"
+                            progressTextView.text = "Generating: ${progress}%"
                         }
+                        delay(2000)
+                        response = client.newCall(getRequest1).execute()
+                        val newResponseBody = response.body?.string()
+                        val newJsonObject = JSONObject(newResponseBody!!)
+                        Log.d("NewJsonObject", newJsonObject.toString())
+                        progress = newJsonObject.getInt("progress")
+                        Log.d("Progress", progress.toString())
                     }
 
                     val refineJson = JSONObject().apply {
@@ -174,22 +189,33 @@ class HomeActivity : AppCompatActivity() {
                         val refineJsonObject = JSONObject(refineResponseBody!!)
                         val refineId = refineJsonObject.getString("result")
                         Log.d("RefineID", refineId)
-
-                        // Simulate progress update (wait for 180 seconds)
-                        for (i in 11..20) {
-                            delay(9000) // Wait for 9 seconds
-                            withContext(Dispatchers.Main) {
-                                progressTextView.visibility = View.VISIBLE
-                                progressTextView.text = "Refining: ${i * 5}%"
-                            }
-                        }
-
-                        // Add code to make a GET request to the same API
                         val getRequest = Request.Builder()
                             .url("https://api.meshy.ai/v2/text-to-3d/$refineId")
                             .addHeader("Authorization", "Bearer $apiKey")
                             .get()
                             .build()
+                        // Simulate progress update (wait for 180 seconds)
+                        getResponse = client.newCall(getRequest).execute()
+                        getResponseBody = getResponse.body?.string()
+                        var newJsonObject = JSONObject(getResponseBody!!)
+                        progress = newJsonObject.getInt("progress")
+                        while(progress < 100) {
+                             // Wait for 9 seconds
+                            withContext(Dispatchers.Main) {
+                                progressTextView.visibility = View.VISIBLE
+                                progressTextView.text = "Refining: ${progress}%"
+                            }
+                            delay(2000)
+                            response = client.newCall(getRequest).execute()
+                            val newResponseBody = response.body?.string()
+                            newJsonObject = JSONObject(newResponseBody!!)
+                            Log.d("NewJsonObject", newJsonObject.toString())
+                            progress = newJsonObject.getInt("progress")
+                            Log.d("Progress", progress.toString())
+                        }
+
+                        // Add code to make a GET request to the same API
+
 
                         // Send the id we got to the API and get the response
                         val getResponse = client.newCall(getRequest).execute()
