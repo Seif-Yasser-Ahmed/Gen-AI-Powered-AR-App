@@ -76,6 +76,11 @@ class HomeActivity : AppCompatActivity() {
         // Launch coroutine for network operation
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                // Show progress bar
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.VISIBLE
+                }
+
                 // Prepare JSON request body
                 val json = JSONObject().apply {
                     put("mode", "preview")
@@ -99,47 +104,66 @@ class HomeActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(responseBody!!)
                     val id = jsonObject.getString("result")
                     Log.d("ID", id)
-
-                    withContext(Dispatchers.Main) {
-                        progressBar.visibility = View.VISIBLE
-                    }
-
                     // Wait for 70 seconds
                     delay(70000)
-                    //add code to make a get request to the same api
-                    val getRequest = Request.Builder()
-                        .url("https://api.meshy.ai/v2/text-to-3d/$id")
+                    val refineJson = JSONObject().apply {
+                        put("mode", "refine")
+                        put("preview_task_id", id)
+                    }
+                    val refinerRequestBody = RequestBody.create("application/json".toMediaTypeOrNull(), refineJson.toString())
+                    val refineRequest = Request.Builder()
+                        .url("https://api.meshy.ai/v2/text-to-3d")
                         .addHeader("Authorization", "Bearer $apiKey")
-                        .get()
+                        .post(refinerRequestBody)
                         .build()
-                    //send the id we got to the api and get the response
-                    val getResponse = client.newCall(getRequest).execute()
-                    val getResponseBody = getResponse.body?.string()
-                    Log.d("GetResponse", getResponseBody.toString())
 
-                    if(getResponse.isSuccessful){
-                        val getJson = JSONObject(getResponseBody!!)
-                        val model_urls = getJson.getString("model_urls")
-                        glb_url = JSONObject(model_urls).getString("glb")
-                        Log.d("GLB_URL", glb_url)
-                        runOnUiThread {
-                            navigateToMainButton.visibility = Button.VISIBLE
+                    val refineResponse = client.newCall(refineRequest).execute()
+                    val refineResponseBody = refineResponse.body?.string()
+                    Log.d("RefineResponse", refineResponseBody.toString())
+                    if (refineResponse.isSuccessful) {
+                        val refineJsonObject = JSONObject(refineResponseBody!!)
+                        val refineId = refineJsonObject.getString("result")
+                        Log.d("RefineID", refineId)
+                        // Wait for 180 seconds
+                        delay(180000)
+                        //add code to make a get request to the same api
+                        val getRequest = Request.Builder()
+                            .url("https://api.meshy.ai/v2/text-to-3d/$refineId")
+                            .addHeader("Authorization", "Bearer $apiKey")
+                            .get()
+                            .build()
+                        //send the id we got to the api and get the response
+                        val getResponse = client.newCall(getRequest).execute()
+                        val getResponseBody = getResponse.body?.string()
+                        Log.d("GetResponse", getResponseBody.toString())
+
+                        if(getResponse.isSuccessful){
+                            val getJson = JSONObject(getResponseBody!!)
+                            val model_urls = getJson.getString("model_urls")
+                            glb_url = JSONObject(model_urls).getString("glb")
+                            Log.d("GLB_URL", glb_url)
+                            runOnUiThread {
+                                navigateToMainButton.visibility = Button.VISIBLE
+                            }
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            progressBar.visibility = View.GONE
+                            //Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            progressBar.visibility = View.GONE
+                            Toast.makeText(this@HomeActivity, "Error: ${refineResponse.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                    withContext(Dispatchers.Main) {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@HomeActivity, "Error: ${response.message}", Toast.LENGTH_SHORT).show()
-                    }
                 }
 
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this@HomeActivity, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
