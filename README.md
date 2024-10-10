@@ -31,8 +31,8 @@ This repository contains several Jupyter notebooks showcasing the following:
 
 ## Datasets
 
-- **Pix3D Dataset**: This dataset is used for training models to generate 3D images from 2D images.
-- **CUB200-2011 Dataset**: A dataset for text-to-image generation, containing images of birds with corresponding textual descriptions.
+- [**Pix3D Dataset**](http://pix3d.csail.mit.edu/): This dataset is used for training models to generate 3D images from 2D images.
+- [**CUB200-2011 Dataset**](https://paperswithcode.com/dataset/cub-200-2011): A dataset for text-to-image generation, containing images of birds with corresponding textual descriptions.
 
 ## Notebooks
 
