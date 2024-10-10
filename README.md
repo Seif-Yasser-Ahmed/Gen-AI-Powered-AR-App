@@ -86,11 +86,6 @@ We would like to express our gratitude to the following repositories and their c
 PiFuHD by MetaResearch for providing the framework and models used in this project.
 ICML 2016 Text-to-Image Generation for inspiring methodologies in text-to-image generation.
 Pix2Vox for its implementation and pretrained models, which contributed to our 3D image generation efforts.
-Contributing
-Contributions are welcome! Please feel free to submit a pull request or open an issue for any suggestions or improvements.
 
 ## License
 This project is licensed under the MIT [`LISENCE`](LICENSE). See the LICENSE file for more details.
-
-Feel free to adjust any sections or content to better suit your needs!
-
