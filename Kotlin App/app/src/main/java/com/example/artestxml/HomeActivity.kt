@@ -208,6 +208,7 @@ class HomeActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main)
                         {
+                            progressTextView.clearAnimation()  // Stop the animation
                             progressTextView.text = "Done: 100%"
                             generateButton.isEnabled = true
                             // Toast.makeText(this@HomeActivity, "Object file retrieved successfully", Toast.LENGTH_SHORT).show()
