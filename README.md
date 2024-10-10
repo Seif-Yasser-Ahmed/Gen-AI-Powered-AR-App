@@ -79,7 +79,7 @@ To get started with the project, follow these steps:
     ```bash
     pip install -r requirements.txt
     ```
-4. Install Android Studio
+4. Install
    [Android Studio](https://developer.android.com/)
 
 ## Acknowledgments
