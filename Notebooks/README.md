@@ -8,5 +8,7 @@ The following notebooks are included in this directory:
 5. [`pretrained-pix2vox-F.ipynb`](Pix2Vox/pretrained-pix2vox-F.ipynb): Inference of the pretrained `Pix2Vox-F` version.
 6. [`dcgan-cls.ipynb`](Text2Image/dcgan-cls.ipynb): Implementation of a Text-To-Image cGAN, leveraging text descriptions as conditioning inputs to generate corresponding images.
 7. [`dcgan-cls_one_Cat.ipynb`](Text2Image/dcgan-cls_one_Cat.ipynb): Implementation of a Text-To-Image cGAN on one category of images due to lack of resources.
+   8. [`Notebooks/PIFuHD/`](PIFuHD): Exploring PIFuHD from [Meta Research](https://github.com/facebookresearch) for High-Resolution 3D Human Digitization.
+9. [`mesh-reconstruction-pytorch3d.ipynb`](Mesh-Reconstruction/mesh-reconstruction-pytorch3d.ipynb): Exploring Pytorch3D from [Meta Research](https://github.com/facebookresearch).
 
 
