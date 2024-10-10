@@ -1,0 +1,16 @@
+torch>=0.4.1
+torchvision>=0.2.1
+Pillow
+scikit-image
+tqdm
+opencv-python>=3.4.0.14
+trimesh
+PyOpenGL
+ffmpeg
+pycocotools==2.0.0
+numpy>=1.14.0
+matplotlib
+h5py
+pandas
+transformers
+nltk
