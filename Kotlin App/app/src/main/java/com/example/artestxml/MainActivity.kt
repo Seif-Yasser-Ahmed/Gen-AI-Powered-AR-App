@@ -6,13 +6,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.github.sceneview.ar.ArSceneView
 import io.github.sceneview.ar.node.ArModelNode
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sceneView: ArSceneView
-    private lateinit var place: Button
+    private lateinit var place: FloatingActionButton
     private lateinit var navigateButton: Button
     private lateinit var modelNode: ArModelNode
 
@@ -46,8 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navigateButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 
