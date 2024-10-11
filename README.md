@@ -63,7 +63,7 @@ The Kotlin app provides an interface for users to input prompts, which are proce
 - Run the application and follow the instructions to visualize 3D models in AR.
 
 ![screenshot1](./docs/screenshot1.png)
-
+![screenshot1](./docs/screenshot2.jpg)
 
 ## Installation
 
