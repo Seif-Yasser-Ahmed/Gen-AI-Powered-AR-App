@@ -62,6 +62,9 @@ The Kotlin app provides an interface for users to input prompts, which are proce
 - Ensure the Meshy API is correctly set up and configured.
 - Run the application and follow the instructions to visualize 3D models in AR.
 
+![screenshot1](./docs/screenshot1.png)
+
+
 ## Installation
 
 To get started with the project, follow these steps:
